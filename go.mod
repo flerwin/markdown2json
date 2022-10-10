@@ -1,4 +1,4 @@
-module github.com/worzeel/markdown2json
+module github.com/flerwin/markdown2json
 
 go 1.19
 
