@@ -13,8 +13,6 @@ import (
 )
 
 func main() {
-	fmt.Println("markdown2json")
-
 	md := goldmark.New(
 		goldmark.WithRenderer(renderer.NewRenderer(renderer.WithNodeRenderers(util.Prioritized(json.NewRenderer(), 1000)))),
 		goldmark.WithExtensions(extension.GFM),
@@ -24,9 +22,9 @@ func main() {
 	)
 
 	var buf bytes.Buffer
-	if err := md.Convert([]byte("# Testing\nThis is a testing"), &buf); err != nil {
+	if err := md.Convert([]byte("# Testing\nThis is a testing\n# Testing 2\nThis is another testing"), &buf); err != nil {
 		panic(err)
 	}
 
-	fmt.Println(buf.String())
+	fmt.Print(buf.String())
 }

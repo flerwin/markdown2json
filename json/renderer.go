@@ -7,6 +7,7 @@ import (
 )
 
 type Renderer struct {
+	heading bool
 }
 
 func NewRenderer() renderer.NodeRenderer {
@@ -23,9 +24,11 @@ func (r *Renderer) RegisterFuncs(reg renderer.NodeRendererFuncRegisterer) {
 
 func (r *Renderer) renderHeading(w util.BufWriter, source []byte, node ast.Node, entering bool) (ast.WalkStatus, error) {
 	if entering {
-		_, _ = w.WriteString("\"heading\": \"")
+		_, _ = w.WriteString("\n\"heading\": \"")
+		r.heading = true
 	} else {
-		_, _ = w.WriteString("\"")
+		_, _ = w.WriteString("\"\n")
+		r.heading = false
 	}
 
 	return ast.WalkContinue, nil
@@ -42,6 +45,10 @@ func (r *Renderer) renderText(w util.BufWriter, source []byte, node ast.Node, en
 	v := segment.Value(source)
 
 	w.Write(v)
+
+	if r.heading {
+		w.WriteString(".")
+	}
 
 	return ast.WalkContinue, nil
 }
